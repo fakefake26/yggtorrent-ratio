@@ -21,7 +21,7 @@ for (var i = tables.length - 1; i >= 0; i--) {
 	if (thead_rows.length > 0) {
 			// we create the td element for fiability
 			var th = document.createElement('th');
-			th.textContent = 'Fiabilité%';
+			th.textContent = 'Fiab%';
 			thead_rows[0].appendChild(th);
 
 			// we create the td element for the leech %
