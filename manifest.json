@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "ygg_ratio",
+    "version": "1.0",
+
+    "description": "Adds the ratio between seed and leech on all boards",
+
+    "icons": {
+        "48": "icons/yggratio-48.png"
+    },
+
+    "content_scripts": [
+      {
+          "matches": ["*://*.yggtorrent.com/*"],
+          "js": ["ratio.js"]
+      }
+    ]
+}
