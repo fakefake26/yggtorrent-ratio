@@ -3,7 +3,7 @@
     "name": "ygg_ratio",
     "version": "1.0.2",
 
-    "description": "Adds the ratio between seed and leech on all boards",
+    "description": "Adds the ratio between seed and leech on all tables",
 
     "icons": {
         "48": "icons/yggratio-48.png"
