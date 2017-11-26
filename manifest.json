@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "ygg_ratio",
-    "version": "1.1.1",
+    "name": "yggtorrent ratio",
+    "version": "1.1.2",
 
-    "description": "Adds the ratio between seed and leech on all tables for the yggtorrent.com site",
+    "description": "Adds the ratio between seeders and leechers on all tables for the yggtorrent.com site",
 
     "icons": {
         "48": "icons/yggratio-48.png"
@@ -11,7 +11,7 @@
 
     "content_scripts": [
       {
-          "matches": ["*://*.yggtorrent.com/*"],
+          "matches": ["*://yggtorrent.com/*"],
           "js": ["ratio.js"]
       }
     ]
