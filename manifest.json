@@ -11,7 +11,7 @@
 
     "content_scripts": [
       {
-          "matches": ["*://yggtorrent.com/*"],
+          "matches": ["*://yggtorrent.com/*", "*://www.yggtorrent.com/*", "*://ww1.yggtorrent.com/*"],
           "js": ["ratio.js"]
       }
     ]
