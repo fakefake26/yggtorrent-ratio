@@ -97,7 +97,7 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 
 	// we create the td element for fiability
 	var th = document.createElement('th');
-	th.textContent = 'F%';
+	th.textContent = 'F';
 	thead.appendChild(th);
 }
 
