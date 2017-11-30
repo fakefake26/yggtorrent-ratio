@@ -85,20 +85,25 @@ app_ygg_ratio_7432e.run = function(tables)
 // we create all column headers attached to the thead of the table
 app_ygg_ratio_7432e.create_headers = function(thead)
 {
-	// we create the td element for the leech %
-	var th = document.createElement('th');
-	th.textContent = 'L%';
-	thead.appendChild(th);
+	// the headers list
+	var titles = [
+		// the leech %
+		'L%',
+		// the ratio %
+		'R%',
+		// the fiability
+		'F'
+	];
 
-	// we create the td element for the ratio %
-	var th = document.createElement('th');
-	th.textContent = 'R%';
-	thead.appendChild(th);
-
-	// we create the td element for fiability
-	var th = document.createElement('th');
-	th.textContent = 'F';
-	thead.appendChild(th);
+	// we iterate over the titles and
+	// create corresponding 'th' elements
+	for (var i = 0; i < titles.length; i++) {
+		// we create the th element and assign the text to it
+		var th = document.createElement('th');
+		th.textContent = titles[i];
+		// we attach the element to the thead of the table
+		thead.appendChild(th);
+	}
 }
 
 // create a td representing a percentage
