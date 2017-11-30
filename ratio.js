@@ -10,6 +10,12 @@ app_ygg_ratio_7432e.const = {
 	'RED' : 'rgb(255, 29, 29)'
 };
 
+// all attributes name to easily retrieve the elements we created
+app_ygg_ratio_7432e.attribute_name = {
+	'header' : 'data-yggtorrent-ratio-header',
+	'data' : 'data-yggtorrent-ratio-data',
+};
+
 // main process
 app_ygg_ratio_7432e.run = function(tables)
 {
@@ -101,6 +107,8 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 		// we create the th element and assign the text to it
 		var th = document.createElement('th');
 		th.textContent = titles[i];
+		// attribute of the app to recognize it
+		th.setAttribute(app_ygg_ratio_7432e.attribute_name.header, "1");
 		// we attach the element to the thead of the table
 		thead.appendChild(th);
 	}
@@ -111,6 +119,8 @@ app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
 {
 	// new td !
 	var td_percentage = document.createElement('td');
+	// attribute of the app to recognize it
+	td_percentage.setAttribute(app_ygg_ratio_7432e.attribute_name.data, "1");
 
 	// if total is 0 we dont do any calculus, we put infinite in the td
 	// since a calcul would do an infinite result
@@ -142,6 +152,8 @@ app_ygg_ratio_7432e.create_td_fiability = function(total)
 {
 	// new td !
 	var td_fiability = document.createElement('td');
+	// attribute of the app to recognize it
+	td_fiability.setAttribute(app_ygg_ratio_7432e.attribute_name.data, "1");
 
 	// if total is 0 we dont do any calculus, it's not relevant
 	if (total == 0) {
