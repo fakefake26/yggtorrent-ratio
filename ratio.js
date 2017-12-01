@@ -86,7 +86,7 @@ app_ygg_ratio_7432e.run = function(tables)
 			rows[j].appendChild(td_fiability);
 		}
 	}
-}
+};
 
 // we create all column headers attached to the thead of the table
 app_ygg_ratio_7432e.create_headers = function(thead)
@@ -112,7 +112,7 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 		// we attach the element to the thead of the table
 		thead.appendChild(th);
 	}
-}
+};
 
 // create a td representing a percentage
 app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
@@ -145,7 +145,7 @@ app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
 
 	// we return the td object
 	return td_percentage;
-}
+};
 
 // create the td representing the fiability of a file
 app_ygg_ratio_7432e.create_td_fiability = function(total)
@@ -179,7 +179,7 @@ app_ygg_ratio_7432e.create_td_fiability = function(total)
 
 	// we return the td object
 	return td_fiability;
-}
+};
 
 // get the correct color from pecentage
 app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
@@ -189,7 +189,7 @@ app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 	else if (percentage >= 40 && percentage < 60) { return app_ygg_ratio_7432e.const.BLUE; }
 	else if (percentage >= 60 && percentage < 80) { return app_ygg_ratio_7432e.const.ORANGE; }
 	else if (percentage >= 80) { return app_ygg_ratio_7432e.const.RED; }
-}
+};
 
 // get all tables of the site
 var tables = document.getElementsByClassName('table table-striped');
