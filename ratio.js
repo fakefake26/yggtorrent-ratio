@@ -88,6 +88,26 @@ app_ygg_ratio_7432e.run = function(tables)
 	}
 };
 
+// we remove all the elements we added
+app_ygg_ratio_7432e.cleanup = function(tables)
+{
+	// for each tables we gonna search for the elements we added
+	for (var i = tables.length - 1; i >= 0; i--) {
+		// the elements have all specific data attributes
+		// we get them. no need to check beforehand if they exist, since it will
+		// already be a search in the table tree
+		var elements_to_remove = tables[i].querySelectorAll('\
+			th[' + app_ygg_ratio_7432e.attribute_name.header + '="1"], \
+			td[' + app_ygg_ratio_7432e.attribute_name.data + '="1"]'
+		);
+
+		// for each element we remove it
+		for (var j = 0; j < elements_to_remove.length; j++) {
+			elements_to_remove[j].remove();
+		}
+	}
+};
+
 // we create all column headers attached to the thead of the table
 app_ygg_ratio_7432e.create_headers = function(thead)
 {
@@ -193,5 +213,9 @@ app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 
 // get all tables of the site
 var tables = document.getElementsByClassName('table table-striped');
+// we cleanup before running, this way we avoid
+// duplicating the data when the site is open in a tab and the extension is
+// updated or reloaded (the update of the extension reloads it)
+app_ygg_ratio_7432e.cleanup(tables);
 // execute the main process
 app_ygg_ratio_7432e.run(tables);
