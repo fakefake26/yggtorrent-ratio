@@ -56,6 +56,11 @@ app_ygg_ratio_7432e.run = function(tables)
 			// since we want to do a calculus
 			var seed = parseInt(cells[number_of_cells - 2].textContent, 10);
 			var leech = parseInt(cells[number_of_cells - 1].textContent, 10);
+
+			// handle the case where the content of the tds equals '--'
+			if (isNaN(seed)) { seed = 0; }
+			if (isNaN(leech)) { leech = 0; }
+
 			// the total numbers of users
 			var total = seed + leech;
 
