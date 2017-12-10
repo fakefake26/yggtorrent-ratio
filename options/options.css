@@ -1,0 +1,16 @@
+html, body {
+    font-size: 0.9em;
+}
+
+div {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+label {
+  display: inline-block;
+  width: 18em;
+}
+
+.checkbox_option{
+}
