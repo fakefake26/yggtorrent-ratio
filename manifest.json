@@ -5,7 +5,7 @@
 
     "description": "Adds the ratio between seeders and leechers on all tables for the yggtorrent.com site",
 
-    "permissions": ["storage"],
+    "permissions": ["storage", "tabs"],
 
     "icons": {
         "48": "icons/yggratio-48.png"
@@ -18,9 +18,17 @@
           "js": ["ratio.js"]
       }
     ],
+    "background": {
+        "scripts": ["background.js"]
+    },
 
     "options_ui": {
         "page": "options.html",
         "browser_style": true
+    },
+
+    "page_action": {
+        "default_icon": "icons/yggratio-48.png",
+        "default_title": "préférences yggtorrent-ratio"
     }
 }
