@@ -5,21 +5,20 @@
     <link rel="stylesheet" href="options.css"/>
   </head>
   <body>
-    <form>
+    <div id="main">
         <div>
             <label for="leech_percentage">Montrer le Leech% (L%): </label>
-            <input class="checkbox_option" type="checkbox" id="leech_percentage" checked>
+            <input type="checkbox" id="leech_percentage" class="checkbox_option" data-key="leech_percentage" checked>
         </div>
         <div>
             <label for="ratio_percentage">Montrer le Ratio% (R%): </label>
-            <input class="checkbox_option" type="checkbox" id="ratio_percentage" checked>
+            <input type="checkbox" id="ratio_percentage" class="checkbox_option" data-key="ratio_percentage" checked>
         </div>
         <div>
             <label for="fiability">Montrer la fiabilité (F): </label>
-            <input class="checkbox_option" type="checkbox" id="fiability" checked>
+            <input type="checkbox" id="fiability" class="checkbox_option" data-key="fiability" checked>
         </div>
-        <button type="submit" class="browser-style button_validate_option">Sauvegarder</button>
-    </form>
+    </div>
     <script src="options.js"></script>
   </body>
 </html>
