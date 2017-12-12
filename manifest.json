@@ -3,7 +3,7 @@
     "name": "yggtorrent ratio",
     "version": "1.2.0",
 
-    "description": "Adds the ratio between seeders and leechers on all tables for the yggtorrent.com site",
+    "description": "Adds a quicker way to see availability of torrents on yggtorrent.com site",
 
     "permissions": ["storage", "tabs"],
 
