@@ -25,7 +25,7 @@ app_ygg_ratio_7432e.attributes = {
 
 // initiate the data for the program to properly run,
 // then runs it.
-app_ygg_ratio_7432e.init = function()
+app_ygg_ratio_7432e.main = function()
 {
 	// get all tables of the site
 	var tables = document.getElementsByClassName('table table-striped');
@@ -250,10 +250,10 @@ app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 };
 
 // initiate app and runs it
-app_ygg_ratio_7432e.init();
+app_ygg_ratio_7432e.main();
 
 // when the user changes preferences on the option page, we reload the app
 browser.storage.onChanged.addListener(function(changes, area){
 	// initiate app and runs it
-	app_ygg_ratio_7432e.init();
+	app_ygg_ratio_7432e.main();
 });
