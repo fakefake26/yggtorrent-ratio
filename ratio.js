@@ -23,6 +23,32 @@ app_ygg_ratio_7432e.attributes = {
 	}
 };
 
+// initiate the data for the program to properly run,
+// then runs it.
+app_ygg_ratio_7432e.init = function()
+{
+	// get all tables of the site
+	var tables = document.getElementsByClassName('table table-striped');
+
+	// we cleanup before running, this way we avoid
+	// duplicating the data when the site is open in a tab and the extension is
+	// updated or reloaded (the update of the extension reloads it)
+	app_ygg_ratio_7432e.cleanup(tables);
+
+	// we get the preferences to show or not the different columns we added
+	// and then we run our app
+	browser.storage.local.get().then(function(preferences){
+	    // if we have preferences set, we assign it to our app
+	    if ('prefs' in preferences) {
+			app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences) ? preferences.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
+			app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences) ? preferences.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
+			app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences) ? preferences.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
+	    }
+	    // execute the main process
+		app_ygg_ratio_7432e.run(tables);
+	});
+};
+
 // main process
 app_ygg_ratio_7432e.run = function(tables)
 {
@@ -223,22 +249,11 @@ app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 	else if (percentage >= 80) { return app_ygg_ratio_7432e.const.RED; }
 };
 
-// get all tables of the site
-var tables = document.getElementsByClassName('table table-striped');
-// we cleanup before running, this way we avoid
-// duplicating the data when the site is open in a tab and the extension is
-// updated or reloaded (the update of the extension reloads it)
-app_ygg_ratio_7432e.cleanup(tables);
+// initiate app and runs it
+app_ygg_ratio_7432e.init();
 
-// we get the preferences to show or not the different columns we added
-// and then we run our app
-browser.storage.local.get().then(function(preferences){
-    // if we have preferences set, we assign it to our app
-    if ('prefs' in preferences) {
-		app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences) ? preferences.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
-		app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences) ? preferences.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
-		app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences) ? preferences.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
-    }
-    // execute the main process
-	app_ygg_ratio_7432e.run(tables);
+// when the user changes preferences on the option page, we reload the app
+browser.storage.onChanged.addListener(function(changes, area){
+	// initiate app and runs it
+	app_ygg_ratio_7432e.init();
 });
