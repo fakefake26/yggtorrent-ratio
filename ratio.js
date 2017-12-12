@@ -11,9 +11,16 @@ app_ygg_ratio_7432e.const = {
 };
 
 // all attributes name to easily retrieve the elements we created
-app_ygg_ratio_7432e.attribute_name = {
-	'header' : 'data-yggtorrent-ratio-header',
-	'data' : 'data-yggtorrent-ratio-data',
+app_ygg_ratio_7432e.attributes = {
+	'prefs': {
+		'leech_percentage' : true,
+		'ratio_percentage' : true,
+		'fiability' : true
+	},
+	'attribute_name': {
+		'header' : 'data-yggtorrent-ratio-header',
+		'data' : 'data-yggtorrent-ratio-data',
+	}
 };
 
 // main process
@@ -102,8 +109,8 @@ app_ygg_ratio_7432e.cleanup = function(tables)
 		// we get them. no need to check beforehand if they exist, since it will
 		// already be a search in the table tree
 		var elements_to_remove = tables[i].querySelectorAll('\
-			th[' + app_ygg_ratio_7432e.attribute_name.header + '="1"], \
-			td[' + app_ygg_ratio_7432e.attribute_name.data + '="1"]'
+			th[' + app_ygg_ratio_7432e.attributes.attribute_name.header + '="1"], \
+			td[' + app_ygg_ratio_7432e.attributes.attribute_name.data + '="1"]'
 		);
 
 		// for each element we remove it
@@ -133,7 +140,7 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 		var th = document.createElement('th');
 		th.textContent = titles[i];
 		// attribute of the app to recognize it
-		th.setAttribute(app_ygg_ratio_7432e.attribute_name.header, "1");
+		th.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.header, "1");
 		// we attach the element to the thead of the table
 		thead.appendChild(th);
 	}
@@ -145,7 +152,7 @@ app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
 	// new td !
 	var td_percentage = document.createElement('td');
 	// attribute of the app to recognize it
-	td_percentage.setAttribute(app_ygg_ratio_7432e.attribute_name.data, "1");
+	td_percentage.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.data, "1");
 
 	// if total is 0 we dont do any calculus, we put infinite in the td
 	// since a calcul would do an infinite result
@@ -178,7 +185,7 @@ app_ygg_ratio_7432e.create_td_fiability = function(total)
 	// new td !
 	var td_fiability = document.createElement('td');
 	// attribute of the app to recognize it
-	td_fiability.setAttribute(app_ygg_ratio_7432e.attribute_name.data, "1");
+	td_fiability.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.data, "1");
 
 	// if total is 0 we dont do any calculus, it's not relevant
 	if (total == 0) {
@@ -222,5 +229,16 @@ var tables = document.getElementsByClassName('table table-striped');
 // duplicating the data when the site is open in a tab and the extension is
 // updated or reloaded (the update of the extension reloads it)
 app_ygg_ratio_7432e.cleanup(tables);
-// execute the main process
-app_ygg_ratio_7432e.run(tables);
+
+// we get the preferences to show or not the different columns we added
+// and then we run our app
+browser.storage.local.get().then(function(preferences){
+    // if we have preferences set, we assign it to our app
+    if ('prefs' in preferences) {
+		app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences) ? preferences.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
+		app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences) ? preferences.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
+		app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences) ? preferences.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
+    }
+    // execute the main process
+	app_ygg_ratio_7432e.run(tables);
+});
