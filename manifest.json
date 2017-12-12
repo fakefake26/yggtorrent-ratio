@@ -8,7 +8,7 @@
     "permissions": ["storage", "tabs"],
 
     "icons": {
-        "48": "icons/yggratio-48.png"
+        "48": "icons/logo-48x48.png"
     },
 
     "content_scripts": [
@@ -28,7 +28,10 @@
     },
 
     "page_action": {
-        "default_icon": "icons/yggratio-48.png",
+        "default_icon": {
+            "19": "icons/logo-19x19.png",
+            "38": "icons/logo-38x38.png"
+        },
         "default_title": "préférences yggtorrent-ratio"
     }
 }
