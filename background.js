@@ -1,13 +1,13 @@
-// au click sur l'icone dans la barre d'adresse, on ouvre les preferences sur la page add-on
+// on click on the icon in the address bar, we open the preferences on the add-on page
 function handleClick()
 {
     browser.runtime.openOptionsPage();
 }
 
-// on ajoute le listener au click sur l'icone dans la barre d'adresse
+// we add the listener onclick on the icon on the address bar
 browser.pageAction.onClicked.addListener(handleClick);
 
-// on montre l'icone dans la barre d'adresse si on est sur yggtorrent et pas dans une page about:
+// we show the icon in the address bar only when we are on the yggtorrent sites
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (!tab.url.match(/^about:/)) {
         browser.pageAction.show(tab.id);
