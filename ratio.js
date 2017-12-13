@@ -118,6 +118,9 @@ app_ygg_ratio_7432e.run = function(tables)
 			// we add the fiability td to quickly see if the percentage is valuable enough
 			var td_fiability = app_ygg_ratio_7432e.create_td_fiability(total);
 
+			// handle preferences by styling with display css porperty
+			app_ygg_ratio_7432e.handle_preferences(td_leech_percentage, td_ratio, td_fiability);
+
 			// we add the tds to the corresponding row
 			rows[j].appendChild(td_leech_percentage);
 			rows[j].appendChild(td_ratio);
@@ -152,11 +155,11 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 	// the headers list
 	var titles = [
 		// the leech %
-		'L%',
+		{'name' : 'L%', 'show' : app_ygg_ratio_7432e.attributes.prefs.leech_percentage},
 		// the ratio %
-		'R%',
+		{'name' : 'R%', 'show' : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage},
 		// the fiability
-		'F'
+		{'name' : 'F', 'show' : app_ygg_ratio_7432e.attributes.prefs.fiability}
 	];
 
 	// we iterate over the titles and
@@ -164,9 +167,11 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 	for (var i = 0; i < titles.length; i++) {
 		// we create the th element and assign the text to it
 		var th = document.createElement('th');
-		th.textContent = titles[i];
+		th.textContent = titles[i].name;
 		// attribute of the app to recognize it
 		th.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.header, "1");
+		// set the visibility from the preferences of the user
+		if (! titles[i].show) { th.style.display = "none" ;}
 		// we attach the element to the thead of the table
 		thead.appendChild(th);
 	}
@@ -247,6 +252,16 @@ app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 	else if (percentage >= 40 && percentage < 60) { return app_ygg_ratio_7432e.const.BLUE; }
 	else if (percentage >= 60 && percentage < 80) { return app_ygg_ratio_7432e.const.ORANGE; }
 	else if (percentage >= 80) { return app_ygg_ratio_7432e.const.RED; }
+};
+
+// we assign the correct visibility from the preferences of the extension
+app_ygg_ratio_7432e.handle_preferences = function(td_leech_percentage, td_ratio, td_fiability)
+{
+	// for each td we add, we assign a display none value if the preferences
+	// set by the user says to not show it
+	if (! app_ygg_ratio_7432e.attributes.prefs.leech_percentage) {td_leech_percentage.style.display = "none"; }
+	if (! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage) { td_ratio.style.display = "none"; }
+	if (! app_ygg_ratio_7432e.attributes.prefs.fiability) { td_fiability.style.display = "none"; }
 };
 
 // initiate app and runs it
