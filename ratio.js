@@ -40,9 +40,9 @@ app_ygg_ratio_7432e.main = function()
 	browser.storage.local.get().then(function(preferences){
 	    // if we have preferences set, we assign it to our app
 	    if ('prefs' in preferences) {
-			app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences) ? preferences.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
-			app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences) ? preferences.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
-			app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences) ? preferences.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
+			app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences.prefs) ? preferences.prefs.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
+			app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences.prefs) ? preferences.prefs.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
+			app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences.prefs) ? preferences.prefs.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
 	    }
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
