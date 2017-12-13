@@ -46,6 +46,10 @@ app_ygg_ratio_7432e.main = function()
 	    }
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
+	}, function(error){
+		// error occurred while getting the storage, execute the process anyway
+	    // execute the main process
+		app_ygg_ratio_7432e.run(tables);
 	});
 };
 
