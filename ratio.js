@@ -122,7 +122,7 @@ app_ygg_ratio_7432e.run = function(tables)
 			// we add the fiability td to quickly see if the percentage is valuable enough
 			var td_fiability = app_ygg_ratio_7432e.create_td_fiability(total);
 
-			// handle preferences by styling with display css porperty
+			// handle visibility from the preferences by styling with display css porperty
 			app_ygg_ratio_7432e.handle_preferences(td_leech_percentage, td_ratio, td_fiability);
 
 			// we add the tds to the corresponding row
