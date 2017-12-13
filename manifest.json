@@ -1,7 +1,13 @@
 {
     "manifest_version": 2,
     "name": "yggtorrent ratio",
-    "version": "1.2.0",
+    "version": "2.0.0",
+
+    "applications": {
+        "gecko": {
+            "id": "{fb6250f1-d852-46df-b71e-dd4fac6a4b65}"
+      }
+    },
 
     "description": "Adds a quicker way to see availability of torrents on yggtorrent.com site",
 
