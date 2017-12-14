@@ -26,7 +26,7 @@ function saveOptions(e)
 
             // if we don't have initial preferences we create the prefs key
             // containing the values
-            if (! ('prefs' in result)) {
+            if (! ('prefs' in preferences)) {
                 preferences["prefs"] = {};
             }
 
