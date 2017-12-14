@@ -7,7 +7,7 @@
     "applications": {
         "gecko": {
             "id": "{fb6250f1-d852-46df-b71e-dd4fac6a4b65}"
-      }
+        }
     },
 
     "description": "__MSG_extensionDescription__",
@@ -19,11 +19,11 @@
     },
 
     "content_scripts": [
-      {
+        {
           "matches": ["*://yggtorrent.com/*", "*://*.yggtorrent.com/*"],
           "exclude_matches": ["*://wiki.yggtorrent.com/*", "*://forum.yggtorrent.com/*"],
           "js": ["ratio.js"]
-      }
+        }
     ],
     "background": {
         "scripts": ["background.js"]
