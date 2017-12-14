@@ -1,0 +1,22 @@
+{
+    "extensionDescription": {
+        "message": "Ajoute un moyen plus rapide de voir la qualité de la disponibilité des torrents sur le site yggtorrent.com",
+        "description": "Description of the extension."
+    },
+    "pageActionDefaultTitle": {
+        "message": "préférences yggtorrent-ratio",
+        "description": "Title on mouse hover on the address bar icon to go to preferences."
+    },
+    "pagePreferencesLeechPercentage": {
+        "message": "Montrer le Leech% (L%) : ",
+        "description": "Label value in preferences page for the leech_percentage."
+    },
+    "pagePreferencesRatioPercentage": {
+        "message": "Montrer le Ratio% (R%) : ",
+        "description": "Label value in preferences page for the ratio_percentage."
+    },
+    "pagePreferencesFiability": {
+        "message": "Montrer la fiabilité (F) : ",
+        "description": "Label value in preferences page for the fiability."
+    }
+}

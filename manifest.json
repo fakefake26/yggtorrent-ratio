@@ -9,8 +9,8 @@
       }
     },
 
-    "description": "Adds a quicker way to see availability of torrents on yggtorrent.com site",
-
+    "description": "__MSG_extensionDescription__",
+    "default_locale": "en",
     "permissions": ["storage", "tabs"],
 
     "icons": {
@@ -38,6 +38,6 @@
             "19": "icons/logo-19x19.png",
             "38": "icons/logo-38x38.png"
         },
-        "default_title": "préférences yggtorrent-ratio"
+        "default_title": "__MSG_pageActionDefaultTitle__"
     }
 }

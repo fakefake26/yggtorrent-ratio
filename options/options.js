@@ -55,3 +55,8 @@ document.addEventListener("DOMContentLoaded", restoreOptions);
 // event delegated to get all the change events of the checkboxes
 // and save options on that event
 document.querySelector("#main").addEventListener("change", saveOptions);
+
+// set the labels string for internationalization
+document.getElementById('label_leech_percentage').textContent = browser.i18n.getMessage("pagePreferencesLeechPercentage");
+document.getElementById('label_ratio_percentage').textContent = browser.i18n.getMessage("pagePreferencesRatioPercentage");
+document.getElementById('label_fiability').textContent = browser.i18n.getMessage("pagePreferencesFiability");

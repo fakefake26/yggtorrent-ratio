@@ -1,0 +1,22 @@
+{
+    "extensionDescription": {
+        "message": "Adds a quicker way to see availability of torrents on yggtorrent.com site",
+        "description": "Description of the extension."
+    },
+    "pageActionDefaultTitle": {
+        "message": "yggtorrent-ratio preferences",
+        "description": "Title on mouse hover on the address bar icon to go to preferences."
+    },
+    "pagePreferencesLeechPercentage": {
+        "message": "Show the Leech% (L%) : ",
+        "description": "Label value in preferences page for the leech_percentage."
+    },
+    "pagePreferencesRatioPercentage": {
+        "message": "Show the Ratio% (R%) : ",
+        "description": "Label value in preferences page for the ratio_percentage."
+    },
+    "pagePreferencesFiability": {
+        "message": "Show the fiability (F) : ",
+        "description": "Label value in preferences page for the fiability."
+    }
+}
