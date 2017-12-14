@@ -1,6 +1,7 @@
 {
     "manifest_version": 2,
     "name": "yggtorrent ratio",
+    "short_name": "ygg ratio",
     "version": "2.0.0",
 
     "applications": {
