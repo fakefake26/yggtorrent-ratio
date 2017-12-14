@@ -11,6 +11,16 @@ function saveOptions(e)
         // since we got namespaced keys in storage, we have to get the complete object
         // to update just the key we received in the event and not deleting the other keys
         browser.storage.local.get().then(function(result){
+            // for firefox version prior to 48, the result of a get is an array
+            // with one item containing the keys
+            if (Array.isArray(preferences)) {
+                // if we have something
+                if (preferences.length !== 0) {
+                    // we set the keys of the object to the current array
+                    preferences = preferences[0];
+                }
+            }
+
             // clone result that we gonna store from what we retrieved
             var preferences = result;
 
@@ -36,6 +46,15 @@ function restoreOptions()
 {
     // set the preferences in local storage
     function setCurrentPreferences(result) {
+        // for firefox version prior to 48, the result of a get is an array
+        // with one item containing the keys
+        if (Array.isArray(preferences)) {
+            // if we have something
+            if (preferences.length !== 0) {
+                // we set the keys of the object to the current array
+                preferences = preferences[0];
+            }
+        }
         // if we have the preferences we load them
         if ('prefs' in result) {
             document.querySelector("#leech_percentage").checked = result.prefs.leech_percentage !== undefined ? result.prefs.leech_percentage : true;

@@ -38,6 +38,15 @@ app_ygg_ratio_7432e.main = function()
 	// we get the preferences to show or not the different columns we added
 	// and then we run our app
 	browser.storage.local.get().then(function(preferences){
+		// for firefox version prior to 48, the result of a get is an array
+		// with one item containing the keys
+	    if (Array.isArray(preferences)) {
+	    	// if we have something
+	    	if (preferences.length !== 0) {
+	    		// we set the keys of the object to the current array
+	    		preferences = preferences[0];
+	    	}
+	    }
 	    // if we have preferences set, we assign it to our app
 	    if ('prefs' in preferences) {
 			app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences.prefs) ? preferences.prefs.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
