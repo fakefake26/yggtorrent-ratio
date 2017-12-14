@@ -13,11 +13,11 @@ function saveOptions(e)
         browser.storage.local.get().then(function(result){
             // for firefox version prior to 48, the result of a get is an array
             // with one item containing the keys
-            if (Array.isArray(preferences)) {
+            if (Array.isArray(result)) {
                 // if we have something
-                if (preferences.length !== 0) {
+                if (result.length !== 0) {
                     // we set the keys of the object to the current array
-                    preferences = preferences[0];
+                    result = result[0];
                 }
             }
 
@@ -48,11 +48,11 @@ function restoreOptions()
     function setCurrentPreferences(result) {
         // for firefox version prior to 48, the result of a get is an array
         // with one item containing the keys
-        if (Array.isArray(preferences)) {
+        if (Array.isArray(result)) {
             // if we have something
-            if (preferences.length !== 0) {
+            if (result.length !== 0) {
                 // we set the keys of the object to the current array
-                preferences = preferences[0];
+                result = result[0];
             }
         }
         // if we have the preferences we load them
