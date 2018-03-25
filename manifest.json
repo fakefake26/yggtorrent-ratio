@@ -20,8 +20,20 @@
 
     "content_scripts": [
         {
-          "matches": ["*://yggtorrent.com/*", "*://*.yggtorrent.com/*"],
-          "exclude_matches": ["*://wiki.yggtorrent.com/*", "*://forum.yggtorrent.com/*"],
+          "matches": [
+            "*://yggtorrent.com/*",
+            "*://*.yggtorrent.com/*",
+            "*://yggtorrent.is/*",
+            "*://*.yggtorrent.is/*",
+            "*://ygg.is/*",
+            "*://*.ygg.is/*"],
+          "exclude_matches": [
+            "*://wiki.yggtorrent.com/*",
+            "*://forum.yggtorrent.com/*",
+            "*://wiki.yggtorrent.is/*",
+            "*://forum.yggtorrent.is/*",
+            "*://wiki.ygg.is/*",
+            "*://forum.ygg.is/*"],
           "js": ["ratio.js"]
         }
     ],
