@@ -28,7 +28,7 @@ app_ygg_ratio_7432e.attributes = {
 app_ygg_ratio_7432e.main = function()
 {
 	// get all tables of the site
-	var tables = document.getElementsByClassName('table table-striped');
+	var tables = document.querySelectorAll('div.table-responsive table.table');
 
 	// we cleanup before running, this way we avoid
 	// duplicating the data when the site is open in a tab and the extension is
