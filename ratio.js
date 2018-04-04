@@ -183,6 +183,10 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 		th.textContent = titles[i].name;
 		// attribute of the app to recognize it
 		th.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.header, "1");
+		th.className = "no sorting";
+		th.tabIndex = 0;
+		th.rowSpan = 1;
+		th.colSpan = 1;
 		// set the visibility from the preferences of the user
 		if (! titles[i].show) { th.style.display = "none" ;}
 		// we attach the element to the thead of the table
