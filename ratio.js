@@ -20,8 +20,11 @@ app_ygg_ratio_7432e.attributes = {
 	'attribute_name': {
 		'header' : 'data-yggtorrent-ratio-header',
 		'data' : 'data-yggtorrent-ratio-data',
-	}
+	},
+	'run_for_ajax_tables_is_running': false
 };
+
+app_ygg_ratio_7432e.empty_tables = [];
 
 // initiate the data for the program to properly run,
 // then runs it.
@@ -55,12 +58,52 @@ app_ygg_ratio_7432e.main = function()
 	    }
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
+		// for ajax, we check every 500 ms if the rows have been added and run if it
+		// is the case
+		var intervalID = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
 	}, function(error){
 		// error occurred while getting the storage, execute the process anyway
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
+		// for ajax, we check every 500 ms if the rows have been added and run if it
+		// is the case
+		var intervalID = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
 	});
 };
+
+// for tables loaded with ajax, we check for all empty tables
+// if they have rows, and runn the script if they do
+app_ygg_ratio_7432e.run_for_ajax_tables = function()
+{
+	// avoid double running
+	if (app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running) {
+		return;
+	}
+	app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running = true;
+
+	// if we have some empty tables to check
+	if (app_ygg_ratio_7432e.empty_tables.length != 0) {
+		// run on empty tables
+		for (var i = app_ygg_ratio_7432e.empty_tables.length - 1; i >= 0; i--) {
+			// avoid running if we don't have yet the rows
+			var tbody = app_ygg_ratio_7432e.empty_tables[i].getElementsByTagName('tbody');
+			// tbody ok ?
+			if(tbody.length == 0) continue;
+			var rows = tbody[0].getElementsByTagName('tr');
+
+			// avoid running for nothing
+			if (rows.length == 0) {
+				continue;
+			}
+			// ok, we got rows now, we run for that table
+			app_ygg_ratio_7432e.run([app_ygg_ratio_7432e.empty_tables[i]]);
+			// we remove it from the list of empty tables
+			app_ygg_ratio_7432e.empty_tables.splice(i, 1);
+		}
+	}
+
+	app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running = false;
+}
 
 // main process
 app_ygg_ratio_7432e.run = function(tables)
@@ -75,7 +118,10 @@ app_ygg_ratio_7432e.run = function(tables)
 		var rows = tbody[0].getElementsByTagName('tr');
 
 		// avoid infinite loop
-		if(rows.length == 0) continue;
+		if (rows.length == 0) {
+			app_ygg_ratio_7432e.empty_tables.push(tables[i]);
+			continue;
+		}
 
 		// we add the header
 		var thead = tables[i].getElementsByTagName('thead');
