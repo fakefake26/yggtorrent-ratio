@@ -25,6 +25,7 @@ app_ygg_ratio_7432e.attributes = {
 };
 
 app_ygg_ratio_7432e.empty_tables = [];
+app_ygg_ratio_7432e.interval_id = null;
 
 // initiate the data for the program to properly run,
 // then runs it.
@@ -60,14 +61,14 @@ app_ygg_ratio_7432e.main = function()
 		app_ygg_ratio_7432e.run(tables);
 		// for ajax, we check every 500 ms if the rows have been added and run if it
 		// is the case
-		var intervalID = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
+		app_ygg_ratio_7432e.interval_id = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
 	}, function(error){
 		// error occurred while getting the storage, execute the process anyway
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
 		// for ajax, we check every 500 ms if the rows have been added and run if it
 		// is the case
-		var intervalID = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
+		app_ygg_ratio_7432e.interval_id = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
 	});
 };
 
@@ -100,6 +101,9 @@ app_ygg_ratio_7432e.run_for_ajax_tables = function()
 			// we remove it from the list of empty tables
 			app_ygg_ratio_7432e.empty_tables.splice(i, 1);
 		}
+	} else {
+		// unset the interval if all have been done
+		window.clearInterval(app_ygg_ratio_7432e.interval_id);
 	}
 
 	app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running = false;
