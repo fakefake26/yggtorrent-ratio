@@ -155,19 +155,36 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 		var ratio = ( leech * 100 ) / seed;
 	}
 
-	// we get the tds we want from the data we calculated
-	var td_leech_percentage = app_ygg_ratio_7432e.create_percentage_td(leech_percentage, total);
-	var td_ratio = app_ygg_ratio_7432e.create_percentage_td(ratio, total);
-	// we add the fiability td to quickly see if the percentage is valuable enough
-	var td_fiability = app_ygg_ratio_7432e.create_td_fiability(total);
+	// we get the spans we want from the data we calculated
+	var span_leech_percentage = app_ygg_ratio_7432e.create_percentage_span(leech_percentage, total);
+	var span_ratio = app_ygg_ratio_7432e.create_percentage_span(ratio, total);
+	// we add the fiability span to quickly see if the percentage is valuable enough
+	var span_fiability = app_ygg_ratio_7432e.create_fiability_span(total);
 
-	// handle visibility from the preferences by styling with display css property
-	app_ygg_ratio_7432e.handle_preferences(td_leech_percentage, td_ratio, td_fiability);
+	var span_first_separator = app_ygg_ratio_7432e.create_separator_span();
+	var span_second_separator = app_ygg_ratio_7432e.create_separator_span();
 
-	// we add the tds to the corresponding row
-	row.appendChild(td_leech_percentage);
-	row.appendChild(td_ratio);
-	row.appendChild(td_fiability);
+	var td_data = app_ygg_ratio_7432e.create_data_td();
+
+	// handle visibility of all data elements
+	app_ygg_ratio_7432e.handle_preferences(
+		td_data,
+		span_leech_percentage,
+		span_ratio,
+		span_fiability,
+		span_first_separator,
+		span_second_separator,
+	);
+
+	// we add the spans
+	td_data.appendChild(span_leech_percentage);
+	td_data.appendChild(span_first_separator);
+	td_data.appendChild(span_ratio);
+	td_data.appendChild(span_second_separator);
+	td_data.appendChild(span_fiability);
+
+	// add the td to the row
+	row.appendChild(td_data);
 	// add attribute to tell that it has been hydrated
 	row.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr, "1");
 
@@ -229,7 +246,6 @@ app_ygg_ratio_7432e.create_headers = function(table)
 	    }
 	}
 
-
 	// the headers list
 	var titles = [
 		// the leech %
@@ -245,12 +261,12 @@ app_ygg_ratio_7432e.create_headers = function(table)
 	// create corresponding 'th' elements
 	for (var i = 0; i < titles.length; i++) {
 		if (titles[i].show) {
-			title += "/" + titles[i].name;
+			title += " | " + titles[i].name;
 		}
 	}
 	// if we have some title, remove the first slash
 	if (title) {
-		title = title.substring(1);
+		title = title.substring(3);
 	}
 
 	// we get the tr of the header
@@ -263,10 +279,16 @@ app_ygg_ratio_7432e.create_headers = function(table)
 		th.textContent = title;
 		// attribute of the app to recognize it
 		th.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.header, "1");
+		// set the attributes specific to the datatable
 		th.className = "no sorting";
 		th.tabIndex = 0;
 		th.rowSpan = 1;
 		th.colSpan = 1;
+		// set the style
+		// 106 is good to correctly see all
+		th.style.width = "106px";
+		th.style.paddingLeft = "0";
+		th.style.paddingRight = "0";
 		// set the visibility from the preferences of the user
 		if (! title) { th.style.display = "none" ;}
 		// we attach the element to the tr in the thead of the table
@@ -290,74 +312,89 @@ app_ygg_ratio_7432e.create_async_headers = function(row)
 	}
 };
 
-
-// create a td representing a percentage
-app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
+// create the td containing the data
+app_ygg_ratio_7432e.create_data_td = function()
 {
 	// new td !
-	var td_percentage = document.createElement('td');
+	var td_data = document.createElement('td');
+	td_data.style.paddingLeft = 0;
+	td_data.style.paddingRight = 0;
 	// attribute of the app to recognize it
-	td_percentage.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.data, "1");
+	td_data.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.data, "1");
 
-	// if total is 0 we dont do any calculus, we put infinite in the td
+	return td_data;
+};
+
+// create a span representing a percentage
+app_ygg_ratio_7432e.create_percentage_span = function(percentage, total)
+{
+	// new span !
+	var span_percentage = document.createElement('span');
+
+	// if total is 0 we don't do any calculus, we put infinite in the span
 	// since a calcul would do an infinite result
 	if (total == 0) {
-		// text of td displayed
-		td_percentage.textContent = 'Inf%';
+		// text of span displayed
+		span_percentage.textContent = 'Inf';
 
 		// we color the text in red
-		td_percentage.style.color = app_ygg_ratio_7432e.const.RED;
+		span_percentage.style.color = app_ygg_ratio_7432e.const.RED;
 	} else {
-		// we format the data and put it in td
+		// we format the data and put it in span
 		// we cap it at 1000, it's not relevant above
 		if (percentage > 1000) {
-			td_percentage.textContent = '>1000%';
+			span_percentage.textContent = 'Inf';
 		} else {
-			td_percentage.textContent = Math.round(percentage) + '%';
+			span_percentage.textContent = Math.round(percentage);
 		}
 
 		// we style the text to have a quick view of the 'goodness' of the percentage
-		td_percentage.style.color = app_ygg_ratio_7432e.get_color_ratio_from_percentage(percentage);
+		span_percentage.style.color = app_ygg_ratio_7432e.get_color_ratio_from_percentage(percentage);
 	}
 
-	// we return the td object
-	return td_percentage;
+	// we return the span object
+	return span_percentage;
 };
 
-// create the td representing the fiability of a file
-app_ygg_ratio_7432e.create_td_fiability = function(total)
+// create the span representing the fiability of a file
+app_ygg_ratio_7432e.create_fiability_span = function(total)
 {
-	// todo create span instead of td to replace all of it
-	// and merge the spans together to form thz final one on only one td
-	// new td !
-	var td_fiability = document.createElement('td');
-	// attribute of the app to recognize it
-	td_fiability.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.data, "1");
+	// new span !
+	var span_fiability = document.createElement('span');
 
-	// if total is 0 we dont do any calculus, it's not relevant
+	// if total is 0 we don't do any calculus, it's not relevant
 	if (total == 0) {
-		// we add a fiability td whose value is not valuable
-		td_fiability.textContent = '-';
+		// we add a fiability span whose value is not valuable
+		span_fiability.textContent = '-';
 	} else {
 		// the threshold  where we consider fully fiable
 		if (total >= 50) {
-			td_fiability.textContent = "1";
-			td_fiability.style.color = app_ygg_ratio_7432e.const.GREEN;
+			span_fiability.textContent = "1";
+			span_fiability.style.color = app_ygg_ratio_7432e.const.GREEN;
 		} else {
 			// we get a value from 0 to 1, 1 is fiable 0 is not at all
 			var fiability = total / 50;
 			// we style the text to have a quick view of the 'goodness' of the fiability
-			if (fiability >= 0.8) { td_fiability.style.color = app_ygg_ratio_7432e.const.GREEN; }
-			else if (fiability >= 0.6 && fiability < 0.8) { td_fiability.style.color = app_ygg_ratio_7432e.const.LIGHT_BLUE; }
-			else if (fiability >= 0.4 && fiability < 0.6) { td_fiability.style.color = app_ygg_ratio_7432e.const.BLUE; }
-			else if (fiability >= 0.2 && fiability < 0.4) { td_fiability.style.color = app_ygg_ratio_7432e.const.ORANGE; }
-			else if (fiability < 0.2) { td_fiability.style.color = app_ygg_ratio_7432e.const.RED; }
-			td_fiability.textContent = fiability.toFixed(2);
+			if (fiability >= 0.8) { span_fiability.style.color = app_ygg_ratio_7432e.const.GREEN; }
+			else if (fiability >= 0.6 && fiability < 0.8) { span_fiability.style.color = app_ygg_ratio_7432e.const.LIGHT_BLUE; }
+			else if (fiability >= 0.4 && fiability < 0.6) { span_fiability.style.color = app_ygg_ratio_7432e.const.BLUE; }
+			else if (fiability >= 0.2 && fiability < 0.4) { span_fiability.style.color = app_ygg_ratio_7432e.const.ORANGE; }
+			else if (fiability < 0.2) { span_fiability.style.color = app_ygg_ratio_7432e.const.RED; }
+			span_fiability.textContent = fiability.toFixed(2);
 		}
 	}
 
-	// we return the td object
-	return td_fiability;
+	// we return the span object
+	return span_fiability;
+};
+
+// create the span containing a slash
+app_ygg_ratio_7432e.create_separator_span = function()
+{
+	// new span !
+	var span_separator = document.createElement('span');
+	span_separator.textContent = ' | ';
+	return span_separator;
 };
 
 // get the correct color from percentage
@@ -371,13 +408,59 @@ app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 };
 
 // we assign the correct visibility from the preferences of the extension
-app_ygg_ratio_7432e.handle_preferences = function(td_leech_percentage, td_ratio, td_fiability)
-{
-	// for each td we add, we assign a display none value if the preferences
+app_ygg_ratio_7432e.handle_preferences = function(
+	td_data,
+	span_leech_percentage,
+	span_ratio,
+	span_fiability,
+	span_first_separator,
+	span_second_separator
+) {
+	// if completely disabled, we don't see any data
+	if (
+		! app_ygg_ratio_7432e.attributes.prefs.leech_percentage
+		&& ! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage
+		&& ! app_ygg_ratio_7432e.attributes.prefs.fiability
+	) {
+		td_data.style.display = "none";
+	} else {
+		// check if all are visible
+		if (
+			app_ygg_ratio_7432e.attributes.prefs.leech_percentage
+			&& app_ygg_ratio_7432e.attributes.prefs.ratio_percentage
+			&& app_ygg_ratio_7432e.attributes.prefs.fiability
+		) {
+			// nothing to do all are visible !
+		} else {
+			// here we check if one or two are visible
+			if (
+				(app_ygg_ratio_7432e.attributes.prefs.leech_percentage && ! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage && ! app_ygg_ratio_7432e.attributes.prefs.fiability)
+				|| (! app_ygg_ratio_7432e.attributes.prefs.leech_percentage && ! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage && app_ygg_ratio_7432e.attributes.prefs.fiability)
+				|| (! app_ygg_ratio_7432e.attributes.prefs.leech_percentage && app_ygg_ratio_7432e.attributes.prefs.ratio_percentage && ! app_ygg_ratio_7432e.attributes.prefs.fiability)
+			) {
+				// only one value is visible
+				// so no separator span
+				span_first_separator.style.display = "none";
+				span_second_separator.style.display = "none";
+			} else {
+				// two values are visible
+				// so just one visible
+				// we have to hide the correct one tho,
+				// the one which is between the two values displayed
+				if (app_ygg_ratio_7432e.attributes.prefs.leech_percentage) {
+					span_second_separator.style.display = "none";
+				} else {
+					span_first_separator.style.display = "none";
+				}
+			}
+		}
+	}
+
+	// for each span we add, we assign a display none value if the preferences
 	// set by the user says to not show it
-	if (! app_ygg_ratio_7432e.attributes.prefs.leech_percentage) {td_leech_percentage.style.display = "none"; }
-	if (! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage) { td_ratio.style.display = "none"; }
-	if (! app_ygg_ratio_7432e.attributes.prefs.fiability) { td_fiability.style.display = "none"; }
+	if (! app_ygg_ratio_7432e.attributes.prefs.leech_percentage) {span_leech_percentage.style.display = "none"; }
+	if (! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage) { span_ratio.style.display = "none"; }
+	if (! app_ygg_ratio_7432e.attributes.prefs.fiability) { span_fiability.style.display = "none"; }
 };
 
 // add observers to check for the dynamic rows that are added by ajax
