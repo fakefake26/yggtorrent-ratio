@@ -191,46 +191,6 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 	return true;
 };
 
-// we remove all the elements we added
-app_ygg_ratio_7432e.cleanup = function(tables)
-{
-	// for each tables we gonna search for the elements we added
-	for (var i = tables.length - 1; i >= 0; i--) {
-		// the elements have all specific data attributes
-		// we get them. no need to check beforehand if they exist, since it will
-		// already be a search in the table tree
-		var elements_to_remove = tables[i].querySelectorAll('\
-			th[' + app_ygg_ratio_7432e.attributes.attribute_name.header + '="1"], \
-			td[' + app_ygg_ratio_7432e.attributes.attribute_name.data + '="1"]'
-		);
-
-		// for each element we remove it
-		for (var j = 0; j < elements_to_remove.length; j++) {
-			elements_to_remove[j].remove();
-		}
-
-		// we also remove the tr attribute that tells it has been hydrated
-		var elements_attribute_to_remove = tables[i].querySelectorAll('\
-			tr[' + app_ygg_ratio_7432e.attributes.attribute_name.tr + '="1"]'
-		);
-
-		// for each element we remove its attribute
-		for (var j = 0; j < elements_attribute_to_remove.length; j++) {
-			elements_attribute_to_remove[j].removeAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr);
-		}
-
-		// and we remove the thead attribute that tells it has a header
-		var elements_attribute_to_remove = tables[i].querySelectorAll('\
-			thead[' + app_ygg_ratio_7432e.attributes.attribute_name.thead + '="1"]'
-		);
-
-		// for each element we remove its attribute
-		for (var j = 0; j < elements_attribute_to_remove.length; j++) {
-			elements_attribute_to_remove[j].removeAttribute(app_ygg_ratio_7432e.attributes.attribute_name.thead);
-		}
-	}
-};
-
 // we create all column headers attached to the thead of the table
 app_ygg_ratio_7432e.create_headers = function(table)
 {
@@ -513,6 +473,47 @@ app_ygg_ratio_7432e.add_observers = function(tables)
 
 		// shutdown observer
 		// observer.disconnect();
+	}
+};
+
+
+// we remove all the elements we added
+app_ygg_ratio_7432e.cleanup = function(tables)
+{
+	// for each tables we gonna search for the elements we added
+	for (var i = tables.length - 1; i >= 0; i--) {
+		// the elements have all specific data attributes
+		// we get them. no need to check beforehand if they exist, since it will
+		// already be a search in the table tree
+		var elements_to_remove = tables[i].querySelectorAll('\
+			th[' + app_ygg_ratio_7432e.attributes.attribute_name.header + '="1"], \
+			td[' + app_ygg_ratio_7432e.attributes.attribute_name.data + '="1"]'
+		);
+
+		// for each element we remove it
+		for (var j = 0; j < elements_to_remove.length; j++) {
+			elements_to_remove[j].remove();
+		}
+
+		// we also remove the tr attribute that tells it has been hydrated
+		var elements_attribute_to_remove = tables[i].querySelectorAll('\
+			tr[' + app_ygg_ratio_7432e.attributes.attribute_name.tr + '="1"]'
+		);
+
+		// for each element we remove its attribute
+		for (var j = 0; j < elements_attribute_to_remove.length; j++) {
+			elements_attribute_to_remove[j].removeAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr);
+		}
+
+		// and we remove the thead attribute that tells it has a header
+		var elements_attribute_to_remove = tables[i].querySelectorAll('\
+			thead[' + app_ygg_ratio_7432e.attributes.attribute_name.thead + '="1"]'
+		);
+
+		// for each element we remove its attribute
+		for (var j = 0; j < elements_attribute_to_remove.length; j++) {
+			elements_attribute_to_remove[j].removeAttribute(app_ygg_ratio_7432e.attributes.attribute_name.thead);
+		}
 	}
 };
 
