@@ -20,12 +20,27 @@ app_ygg_ratio_7432e.attributes = {
 	'attribute_name': {
 		'header' : 'data-yggtorrent-ratio-header',
 		'data' : 'data-yggtorrent-ratio-data',
-	},
-	'run_for_ajax_tables_is_running': false
+		'tr' : 'data-yggtorrent-ratio-tr',
+		'thead' : 'data-yggtorrent-ratio-thead'
+	}
 };
 
-app_ygg_ratio_7432e.empty_tables = [];
-app_ygg_ratio_7432e.interval_id = null;
+/**
+ * Get the closest matching element up the DOM tree.
+ * @private
+ * @param  {Element} elem     Starting element
+ * @param  {String}  selector Selector to match against
+ * @return {Boolean|Element}  Returns null if not match found
+ */
+var getClosest = function (elem, selector)
+{
+	// Get closest match
+	for ( ; elem && elem !== document; elem = elem.parentNode ) {
+		if ( elem.matches( selector ) ) return elem;
+	}
+
+	return null;
+};
 
 // initiate the data for the program to properly run,
 // then runs it.
@@ -57,65 +72,26 @@ app_ygg_ratio_7432e.main = function()
 			app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences.prefs) ? preferences.prefs.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
 			app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences.prefs) ? preferences.prefs.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
 	    }
+	    // adds observer for tables
+		app_ygg_ratio_7432e.add_observers(tables);
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
-		// for ajax, we check every 500 ms if the rows have been added and run if it
-		// is the case
-		app_ygg_ratio_7432e.interval_id = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
 	}, function(error){
 		// error occurred while getting the storage, execute the process anyway
+		// adds observer for tables
+		app_ygg_ratio_7432e.add_observers(tables);
 	    // execute the main process
 		app_ygg_ratio_7432e.run(tables);
-		// for ajax, we check every 500 ms if the rows have been added and run if it
-		// is the case
-		app_ygg_ratio_7432e.interval_id = window.setInterval(app_ygg_ratio_7432e.run_for_ajax_tables, 500);
 	});
 };
-
-// for tables loaded with ajax, we check for all empty tables
-// if they have rows, and runn the script if they do
-app_ygg_ratio_7432e.run_for_ajax_tables = function()
-{
-	// avoid double running
-	if (app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running) {
-		return;
-	}
-	app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running = true;
-
-	// if we have some empty tables to check
-	if (app_ygg_ratio_7432e.empty_tables.length != 0) {
-		// run on empty tables
-		for (var i = app_ygg_ratio_7432e.empty_tables.length - 1; i >= 0; i--) {
-			// avoid running if we don't have yet the rows
-			var tbody = app_ygg_ratio_7432e.empty_tables[i].getElementsByTagName('tbody');
-			// tbody ok ?
-			if(tbody.length == 0) continue;
-			var rows = tbody[0].getElementsByTagName('tr');
-
-			// avoid running for nothing
-			if (rows.length == 0) {
-				continue;
-			}
-			// ok, we got rows now, we run for that table
-			app_ygg_ratio_7432e.run([app_ygg_ratio_7432e.empty_tables[i]]);
-			// we remove it from the list of empty tables
-			app_ygg_ratio_7432e.empty_tables.splice(i, 1);
-		}
-	} else {
-		// unset the interval if all have been done
-		window.clearInterval(app_ygg_ratio_7432e.interval_id);
-	}
-
-	app_ygg_ratio_7432e.attributes.run_for_ajax_tables_is_running = false;
-}
 
 // main process
 app_ygg_ratio_7432e.run = function(tables)
 {
-	// first for for each tables
+	// then we hydrate the rows of each table
 	for (var i = tables.length - 1; i >= 0; i--) {
 		// we get all rows of that table from the tbody
-		// wich contains all the data
+		// which contains all the data
 		var tbody = tables[i].getElementsByTagName('tbody');
 		// tbody ok ?
 		if(tbody.length == 0) continue;
@@ -123,73 +99,79 @@ app_ygg_ratio_7432e.run = function(tables)
 
 		// avoid infinite loop
 		if (rows.length == 0) {
-			app_ygg_ratio_7432e.empty_tables.push(tables[i]);
 			continue;
 		}
 
-		// we add the header
-		var thead = tables[i].getElementsByTagName('thead');
-		// we get the tr of the header
-		var thead_rows = tables[i].getElementsByTagName('tr');
-
-		// header present ?
-		if (thead_rows.length > 0) {
-			app_ygg_ratio_7432e.create_headers(thead_rows[0]);
-		}
+		// we create the headers on the table only if
+		// there are rows to avoid conflicting with the datatable
+		// ajax.
+		// Datatable will throw an error because it has a header that
+		// it does not know about, so we can't put the headers at the beginning
+		app_ygg_ratio_7432e.create_headers(tables[i]);
 
 		// for each row we gonna get the tds values
 		// and append a td containing the ratio percentage
 		for (var j = rows.length - 1; j >= 0; j--) {
-			// we get all the cells, we want to retrieve the seed and leech values
-			var cells = rows[j].getElementsByTagName('td');
-			// we get the total number of cells
-			var number_of_cells = cells.length;
-
-			// some rows have no data relevant for us
-			if(number_of_cells == 0) continue;
-
-			// we get the seed and leech values in int,
-			// since we want to do a calculus
-			var seed = parseInt(cells[number_of_cells - 2].textContent, 10);
-			var leech = parseInt(cells[number_of_cells - 1].textContent, 10);
-
-			// handle the case where the content of the tds equals '--'
-			if (isNaN(seed)) { seed = 0; }
-			if (isNaN(leech)) { leech = 0; }
-
-			// the total numbers of users
-			var total = seed + leech;
-
-			// the values we will put in the tds
-			// the leech percentage over seeders and leechers
-			// If the seeders and leechers are equal, it will be 50%
-			var leech_percentage = 0;
-			// the ratio between seeders and leechers.
-			// If the seeders and leechers are equal, it will be 100%
-			var ratio = 0;
-
-			// if we have some leechers/seeders we do the calculus
-			if (total != 0) {
-				// we do the calculus of the ratio and leech percentage to display in the row
-				var leech_percentage = ( leech * 100 ) / total;
-				var ratio = ( leech * 100 ) / seed;
-			}
-
-			// we get the tds we want from the data we calculated
-			var td_leech_percentage = app_ygg_ratio_7432e.create_percentage_td(leech_percentage, total);
-			var td_ratio = app_ygg_ratio_7432e.create_percentage_td(ratio, total);
-			// we add the fiability td to quickly see if the percentage is valuable enough
-			var td_fiability = app_ygg_ratio_7432e.create_td_fiability(total);
-
-			// handle visibility from the preferences by styling with display css porperty
-			app_ygg_ratio_7432e.handle_preferences(td_leech_percentage, td_ratio, td_fiability);
-
-			// we add the tds to the corresponding row
-			rows[j].appendChild(td_leech_percentage);
-			rows[j].appendChild(td_ratio);
-			rows[j].appendChild(td_fiability);
+			app_ygg_ratio_7432e.hydrate_row(rows[j]);
 		}
 	}
+};
+
+// we add the data of the extension to the row
+app_ygg_ratio_7432e.hydrate_row = function(row)
+{
+	// we get all the cells, we want to retrieve the seed and leech values
+	var cells = row.getElementsByTagName('td');
+	// we get the total number of cells
+	var number_of_cells = cells.length;
+
+	// some rows have no data relevant for us
+	if(number_of_cells == 0) return false;
+
+	// we get the seed and leech values in int,
+	// since we want to do a calculus
+	var seed = parseInt(cells[number_of_cells - 2].textContent, 10);
+	var leech = parseInt(cells[number_of_cells - 1].textContent, 10);
+
+	// handle the case where the content of the tds equals '--'
+	if (isNaN(seed)) { seed = 0; }
+	if (isNaN(leech)) { leech = 0; }
+
+	// the total numbers of users
+	var total = seed + leech;
+
+	// the values we will put in the tds
+	// the leech percentage over seeders and leechers
+	// If the seeders and leechers are equal, it will be 50%
+	var leech_percentage = 0;
+	// the ratio between seeders and leechers.
+	// If the seeders and leechers are equal, it will be 100%
+	var ratio = 0;
+
+	// if we have some leechers/seeders we do the calculus
+	if (total != 0) {
+		// we do the calculus of the ratio and leech percentage to display in the row
+		var leech_percentage = ( leech * 100 ) / total;
+		var ratio = ( leech * 100 ) / seed;
+	}
+
+	// we get the tds we want from the data we calculated
+	var td_leech_percentage = app_ygg_ratio_7432e.create_percentage_td(leech_percentage, total);
+	var td_ratio = app_ygg_ratio_7432e.create_percentage_td(ratio, total);
+	// we add the fiability td to quickly see if the percentage is valuable enough
+	var td_fiability = app_ygg_ratio_7432e.create_td_fiability(total);
+
+	// handle visibility from the preferences by styling with display css property
+	app_ygg_ratio_7432e.handle_preferences(td_leech_percentage, td_ratio, td_fiability);
+
+	// we add the tds to the corresponding row
+	row.appendChild(td_leech_percentage);
+	row.appendChild(td_ratio);
+	row.appendChild(td_fiability);
+	// add attribute to tell that it has been hydrated
+	row.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr, "1");
+
+	return true;
 };
 
 // we remove all the elements we added
@@ -209,12 +191,45 @@ app_ygg_ratio_7432e.cleanup = function(tables)
 		for (var j = 0; j < elements_to_remove.length; j++) {
 			elements_to_remove[j].remove();
 		}
+
+		// we also remove the tr attribute that tells it has been hydrated
+		var elements_attribute_to_remove = tables[i].querySelectorAll('\
+			tr[' + app_ygg_ratio_7432e.attributes.attribute_name.tr + '="1"]'
+		);
+
+		// for each element we remove its attribute
+		for (var j = 0; j < elements_attribute_to_remove.length; j++) {
+			elements_attribute_to_remove[j].removeAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr);
+		}
+
+		// and we remove the thead attribute that tells it has a header
+		var elements_attribute_to_remove = tables[i].querySelectorAll('\
+			thead[' + app_ygg_ratio_7432e.attributes.attribute_name.thead + '="1"]'
+		);
+
+		// for each element we remove its attribute
+		for (var j = 0; j < elements_attribute_to_remove.length; j++) {
+			elements_attribute_to_remove[j].removeAttribute(app_ygg_ratio_7432e.attributes.attribute_name.thead);
+		}
 	}
 };
 
 // we create all column headers attached to the thead of the table
-app_ygg_ratio_7432e.create_headers = function(thead)
+app_ygg_ratio_7432e.create_headers = function(table)
 {
+	// we get the header
+	var thead = table.getElementsByTagName('thead');
+
+	if (thead.length == 0) {
+		return;
+	} else {
+		// check right now if it needs a header
+	    if (thead[0].hasAttribute(app_ygg_ratio_7432e.attributes.attribute_name.thead)) {
+	    	return;
+	    }
+	}
+
+
 	// the headers list
 	var titles = [
 		// the leech %
@@ -225,12 +240,27 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 		{'name' : 'F', 'show' : app_ygg_ratio_7432e.attributes.prefs.fiability}
 	];
 
+	var title = "";
 	// we iterate over the titles and
 	// create corresponding 'th' elements
 	for (var i = 0; i < titles.length; i++) {
+		if (titles[i].show) {
+			title += "/" + titles[i].name;
+		}
+	}
+	// if we have some title, remove the first slash
+	if (title) {
+		title = title.substring(1);
+	}
+
+	// we get the tr of the header
+	var thead_rows = thead[0].getElementsByTagName('tr');
+
+	// header present ?
+	if (thead_rows.length > 0) {
 		// we create the th element and assign the text to it
 		var th = document.createElement('th');
-		th.textContent = titles[i].name;
+		th.textContent = title;
 		// attribute of the app to recognize it
 		th.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.header, "1");
 		th.className = "no sorting";
@@ -238,11 +268,28 @@ app_ygg_ratio_7432e.create_headers = function(thead)
 		th.rowSpan = 1;
 		th.colSpan = 1;
 		// set the visibility from the preferences of the user
-		if (! titles[i].show) { th.style.display = "none" ;}
-		// we attach the element to the thead of the table
-		thead.appendChild(th);
+		if (! title) { th.style.display = "none" ;}
+		// we attach the element to the tr in the thead of the table
+		thead_rows[0].appendChild(th);
+		// we tell by that attribute that it has been created
+		thead[0].setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.thead, "1");
 	}
 };
+
+// create the headers for ajax filled tables
+app_ygg_ratio_7432e.create_async_headers = function(row)
+{
+	// get the table we are in
+	var table = getClosest(row, "table");
+	// if we have it, we create the headers, that function will not add another header
+	// if there is one still present
+	if (table) {
+		app_ygg_ratio_7432e.create_headers(table);
+	} else {
+		// table not found !
+	}
+};
+
 
 // create a td representing a percentage
 app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
@@ -280,6 +327,8 @@ app_ygg_ratio_7432e.create_percentage_td = function(percentage, total)
 // create the td representing the fiability of a file
 app_ygg_ratio_7432e.create_td_fiability = function(total)
 {
+	// todo create span instead of td to replace all of it
+	// and merge the spans together to form thz final one on only one td
 	// new td !
 	var td_fiability = document.createElement('td');
 	// attribute of the app to recognize it
@@ -311,7 +360,7 @@ app_ygg_ratio_7432e.create_td_fiability = function(total)
 	return td_fiability;
 };
 
-// get the correct color from pecentage
+// get the correct color from percentage
 app_ygg_ratio_7432e.get_color_ratio_from_percentage = function(percentage)
 {
 	if (percentage < 20) { return app_ygg_ratio_7432e.const.GREEN; }
@@ -329,6 +378,59 @@ app_ygg_ratio_7432e.handle_preferences = function(td_leech_percentage, td_ratio,
 	if (! app_ygg_ratio_7432e.attributes.prefs.leech_percentage) {td_leech_percentage.style.display = "none"; }
 	if (! app_ygg_ratio_7432e.attributes.prefs.ratio_percentage) { td_ratio.style.display = "none"; }
 	if (! app_ygg_ratio_7432e.attributes.prefs.fiability) { td_fiability.style.display = "none"; }
+};
+
+// add observers to check for the dynamic rows that are added by ajax
+app_ygg_ratio_7432e.add_observers = function(tables)
+{
+	// this callback get executed each time a children has been added or
+	// removed from the table. It will check that it is a row of data
+	// that has not been hydrated yet and then hydrate it the latter is true.
+	var callback = function(mutationsList) {
+		// for every mutation we have received
+	    for(var mutation of mutationsList) {
+	    	// if this mutation concerns an element that has been added or removed
+	        if (mutation.type == 'childList') {
+	        	// we will iterate through the addedNodes of that mutation
+	            for(var addedNode of mutation.addedNodes) {
+	            	// if the node is an element and a row
+	            	if (addedNode.nodeType === Node.ELEMENT_NODE && addedNode.nodeName === "TR") {
+	            		// we check if it has been hydrated by this attribute that is added
+	            		// for every row hydrated
+	            		if(! addedNode.hasAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr)) {
+	            			// ok this row is not hydrated so we hydrate it.
+	            			app_ygg_ratio_7432e.hydrate_row(addedNode);
+	            			// since we can't add form the start the headers,
+	            			// we need to check if there is the header and if not
+	            			// create it
+	            			app_ygg_ratio_7432e.create_async_headers(addedNode);
+	            		}
+	            	} else {
+	            		// not a tr, nothing to do
+	            	}
+	            }
+	        } else {
+	            // not a childlist mutation, we don't care
+	        }
+	    }
+	};
+
+	// Observer options, we observe the children node changes, and we tell him by
+	// the subtree option that we want to observe
+	// all the tree of the node and not just the direct children
+	var config = {childList: true, subtree: true};
+
+	// for each tables we gonna add an observer
+	for (var i = tables.length - 1; i >= 0; i--) {
+		// create observer instance linked to the callback function
+		var observer = new MutationObserver(callback);
+
+		// Begin observing the target node for the mutations we configured earlier
+		observer.observe(tables[i], config);
+
+		// shutdown observer
+		// observer.disconnect();
+	}
 };
 
 // initiate app and runs it
