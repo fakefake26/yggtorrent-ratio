@@ -41,12 +41,20 @@
             "*://forum.ygg.to/*",
             "*://*.yggtorrent.is/forum/*",
             "*://*.yggtorrent.to/forum/*",
+            "*://yggtorrent.is/forum/*",
+            "*://yggtorrent.to/forum/*",
             "*://*.ygg.is/forum/*",
             "*://*.ygg.to/forum/*",
+            "*://ygg.is/forum/*",
+            "*://ygg.to/forum/*",
             "*://*.yggtorrent.is/user/donate*",
             "*://*.yggtorrent.to/user/donate*",
+            "*://yggtorrent.is/user/donate*",
+            "*://yggtorrent.to/user/donate*",
             "*://*.ygg.to/user/donate*",
-            "*://*.ygg.is/user/donate*"
+            "*://*.ygg.is/user/donate*",
+            "*://ygg.to/user/donate*",
+            "*://ygg.is/user/donate*"
         ],
           "js": ["ratio.js"]
         }
