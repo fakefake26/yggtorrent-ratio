@@ -21,8 +21,6 @@
     "content_scripts": [
         {
           "matches": [
-            "*://yggtorrent.com/*",
-            "*://*.yggtorrent.com/*",
             "*://yggtorrent.is/*",
             "*://*.yggtorrent.is/*",
             "*://ygg.is/*",
@@ -33,12 +31,10 @@
             "*://*.ygg.to/*"
         ],
           "exclude_matches": [
-            "*://wiki.yggtorrent.com/*",
             "*://wiki.yggtorrent.is/*",
             "*://wiki.yggtorrent.to/*",
             "*://wiki.ygg.is/*",
             "*://wiki.ygg.to/*",
-            "*://forum.yggtorrent.com/*",
             "*://forum.yggtorrent.is/*",
             "*://forum.yggtorrent.to/*",
             "*://forum.ygg.is/*",
