@@ -112,7 +112,11 @@ app_ygg_ratio_7432e.run = function(tables)
 		// for each row we gonna get the tds values
 		// and append a td containing the ratio percentage
 		for (var j = rows.length - 1; j >= 0; j--) {
-			app_ygg_ratio_7432e.hydrate_row(rows[j]);
+			//  check if it is worked by observers
+			if(! rows[j].hasAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr)) {
+				// otherwise go and hydrate it
+				app_ygg_ratio_7432e.hydrate_row(rows[j]);
+			}
 		}
 	}
 };
@@ -127,6 +131,11 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 
 	// some rows have no data relevant for us
 	if(number_of_cells == 0) return false;
+
+	// add attribute to tell that it has been hydrated
+	// we put it as soon as possible to avoid
+	// race conditions at much as we can
+	row.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr, "1");
 
 	// we get the seed and leech values in int,
 	// since we want to do a calculus
@@ -185,8 +194,6 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 
 	// add the td to the row
 	row.appendChild(td_data);
-	// add attribute to tell that it has been hydrated
-	row.setAttribute(app_ygg_ratio_7432e.attributes.attribute_name.tr, "1");
 
 	return true;
 };
