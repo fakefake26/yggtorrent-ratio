@@ -18,5 +18,9 @@
     "pagePreferencesFiability": {
         "message": "Montrer la fiabilité (F) : ",
         "description": "Label value in preferences page for the fiability."
+    },
+    "pagePreferencesRatio": {
+        "message": "Montrer le ratio après téléchargement (Ratio A.T.) : ",
+        "description": "Label value in preferences page for the ratio after download."
     }
 }

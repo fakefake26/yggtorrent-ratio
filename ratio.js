@@ -15,7 +15,8 @@ app_ygg_ratio_7432e.attributes = {
 	'prefs': {
 		'leech_percentage' : true,
 		'ratio_percentage' : true,
-		'fiability' : true
+		'fiability' : true,
+		'ratio' : true
 	},
 	'attribute_name': {
 		'header' : 'data-yggtorrent-ratio-header',
@@ -138,6 +139,7 @@ app_ygg_ratio_7432e.main = function()
 			app_ygg_ratio_7432e.attributes.prefs.leech_percentage = ('leech_percentage' in preferences.prefs) ? preferences.prefs.leech_percentage : app_ygg_ratio_7432e.attributes.prefs.leech_percentage;
 			app_ygg_ratio_7432e.attributes.prefs.ratio_percentage = ('ratio_percentage' in preferences.prefs) ? preferences.prefs.ratio_percentage : app_ygg_ratio_7432e.attributes.prefs.ratio_percentage;
 			app_ygg_ratio_7432e.attributes.prefs.fiability = ('fiability' in preferences.prefs) ? preferences.prefs.fiability : app_ygg_ratio_7432e.attributes.prefs.fiability;
+			app_ygg_ratio_7432e.attributes.prefs.ratio = ('ratio' in preferences.prefs) ? preferences.prefs.ratio : app_ygg_ratio_7432e.attributes.prefs.ratio;
 	    }
 	    // adds observer for tables
 		app_ygg_ratio_7432e.add_observers(tables);
@@ -255,6 +257,18 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 
 	var td_data = app_ygg_ratio_7432e.create_data_td();
 
+	// next is the ratio td
+	var td_data_ratio = app_ygg_ratio_7432e.create_data_td();
+
+	// if we have a value
+	if (ratio_post_download !== null) {
+		td_data_ratio.innerHTML = ratio_post_download['ratio'].toFixed(3) + ' (' + ratio_post_download['diff'].toFixed(3) + ')';
+	} else {
+		// we don't have a value, so we don't show this td,
+		// probably the user is not connected
+		td_data_ratio.style.display = 'none';
+	}
+
 	// handle visibility of all data elements
 	app_ygg_ratio_7432e.handle_preferences(
 		td_data,
@@ -263,6 +277,7 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 		span_fiability,
 		span_first_separator,
 		span_second_separator,
+		td_data_ratio
 	);
 
 	// we add the spans
@@ -272,18 +287,9 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 	td_data.appendChild(span_second_separator);
 	td_data.appendChild(span_fiability);
 
-	// add the td to the row
+	// add the tds to the row
 	row.appendChild(td_data);
-
-	// next is the rati td
-	var td_data_ratio = app_ygg_ratio_7432e.create_data_td();
-	// if we have a value
-	if (ratio_post_download !== null) {
-		td_data_ratio.innerHTML = ratio_post_download['ratio'].toFixed(3) + ' (' + ratio_post_download['diff'].toFixed(3) + ')';
-
-		// add the td to the row only if value
-		row.appendChild(td_data_ratio);
-	}
+	row.appendChild(td_data_ratio);
 
 	return true;
 };
@@ -344,8 +350,9 @@ app_ygg_ratio_7432e.create_headers = function(table)
 		var invisible_thead_ratio = false;
 
 		if (
-			app_ygg_ratio_7432e.attributes.user_data.download === null
-		 	&& app_ygg_ratio_7432e.attributes.user_data.upload === null
+			(app_ygg_ratio_7432e.attributes.user_data.download === null
+		 		&& app_ygg_ratio_7432e.attributes.user_data.upload === null)
+		 	|| ! app_ygg_ratio_7432e.attributes.prefs.ratio
 		 	) {
 			invisible_thead_ratio = true;
 		}
@@ -506,7 +513,8 @@ app_ygg_ratio_7432e.handle_preferences = function(
 	span_ratio,
 	span_fiability,
 	span_first_separator,
-	span_second_separator
+	span_second_separator,
+	td_data_ratio
 ) {
 	// if completely disabled, we don't see any data
 	if (
@@ -546,6 +554,11 @@ app_ygg_ratio_7432e.handle_preferences = function(
 				}
 			}
 		}
+	}
+
+	// ratio
+	if (! app_ygg_ratio_7432e.attributes.prefs.ratio) {
+		td_data_ratio.style.display = 'none';
 	}
 
 	// for each span we add, we assign a display none value if the preferences

@@ -60,6 +60,7 @@ function restoreOptions()
             document.querySelector("#leech_percentage").checked = result.prefs.leech_percentage !== undefined ? result.prefs.leech_percentage : true;
             document.querySelector("#ratio_percentage").checked = result.prefs.ratio_percentage !== undefined ? result.prefs.ratio_percentage : true;
             document.querySelector("#fiability").checked = result.prefs.fiability !== undefined ? result.prefs.fiability : true;
+            document.querySelector("#ratio").checked = result.prefs.ratio !== undefined ? result.prefs.ratio : true;
         }
     };
 
@@ -79,3 +80,4 @@ document.querySelector("#main").addEventListener("change", saveOptions);
 document.getElementById('label_leech_percentage').textContent = browser.i18n.getMessage("pagePreferencesLeechPercentage");
 document.getElementById('label_ratio_percentage').textContent = browser.i18n.getMessage("pagePreferencesRatioPercentage");
 document.getElementById('label_fiability').textContent = browser.i18n.getMessage("pagePreferencesFiability");
+document.getElementById('label_ratio').textContent = browser.i18n.getMessage("pagePreferencesRatio");
