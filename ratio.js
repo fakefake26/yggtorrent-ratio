@@ -262,7 +262,7 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 
 	// if we have a value
 	if (ratio_post_download !== null) {
-		td_data_ratio.innerHTML = ratio_post_download['ratio'].toFixed(3) + ' (' + ratio_post_download['diff'].toFixed(3) + ')';
+		td_data_ratio.textContent = ratio_post_download['ratio'].toFixed(3) + ' (' + ratio_post_download['diff'].toFixed(3) + ')';
 	} else {
 		// we don't have a value, so we don't show this td,
 		// probably the user is not connected
