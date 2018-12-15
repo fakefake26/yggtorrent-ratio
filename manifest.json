@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "yggtorrent ratio",
     "short_name": "ygg ratio",
-    "version": "3.0.2",
+    "version": "3.1.1",
 
     "applications": {
         "gecko": {
