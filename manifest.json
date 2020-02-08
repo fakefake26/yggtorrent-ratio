@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "yggtorrent ratio",
     "short_name": "ygg ratio",
-    "version": "3.1.4",
+    "version": "3.1.5",
 
     "applications": {
         "gecko": {
@@ -21,16 +21,16 @@
     "content_scripts": [
         {
           "matches": [
-            "*://yggtorrent.ws/*",
-            "*://*.yggtorrent.ws/*"
+            "*://yggtorrent.se/*",
+            "*://*.yggtorrent.se/*"
         ],
           "exclude_matches": [
-            "*://wiki.yggtorrent.ws/*",
-            "*://forum.yggtorrent.ws/*",
-            "*://*.yggtorrent.ws/forum/*",
-            "*://yggtorrent.ws/forum/*",
-            "*://*.yggtorrent.ws/user/donate*",
-            "*://yggtorrent.ws/user/donate*"
+            "*://wiki.yggtorrent.se/*",
+            "*://forum.yggtorrent.se/*",
+            "*://*.yggtorrent.se/forum/*",
+            "*://yggtorrent.se/forum/*",
+            "*://*.yggtorrent.se/user/donate*",
+            "*://yggtorrent.se/user/donate*"
         ],
           "js": ["ratio.js"]
         }
