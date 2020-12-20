@@ -29,8 +29,12 @@
             "*://forum.yggtorrent.si/*",
             "*://*.yggtorrent.si/forum/*",
             "*://yggtorrent.si/forum/*",
-            "*://*.yggtorrent.si/user/donate*",
-            "*://yggtorrent.si/user/donate*"
+            "*://*.yggtorrent.si/user/*",
+            "*://yggtorrent.si/user/*",
+            "*://*.yggtorrent.si/donation/bonus",
+            "*://yggtorrent.si/donation/bonus",
+            "*://*.yggtorrent.si/rss*",
+            "*://yggtorrent.si/rss*"
         ],
           "js": ["ratio.js"]
         }
