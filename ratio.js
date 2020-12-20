@@ -66,34 +66,34 @@ var getTextNode = function(elem)
 };
 
 /**
- * get the multiplier to convert any size value in Go
+ * get the multiplier to convert any size value in Ko
  * @private
  * @param  {String} power     the name of the power (Mo,To...)
  * @return {Integer|Float}  Return the multiplier to convert to Go
  */
-var getMultiplierForGo = function (power)
+var getMultiplierForKo = function (power)
 {
 	switch (power) {
 		case 'o':
-			return 1 /  (1024 * 1024 * 1024);
+			return 1 /  1024;
 		case 'Ko':
 		case 'ko':
-			return 1 / (1024 * 1024);
+			return 1;
 		case 'Mo':
 		case 'mo':
-			return 1 / 1024;
+			return 1024;
 		case 'Go':
 		case 'go':
-			return 1;
+			return 1024 * 1024;
 		case 'To':
 		case 'to':
-			return 1024;
+			return 1024 * 1024 * 1024;
 		case 'Po':
 		case 'po':
-			return 1024 * 1024;
+			return 1024 * 1024 * 1024 * 1024;
 		case 'Eo':
 		case 'eo':
-			return 1024 * 1024 * 1024;
+			return 1024 * 1024 * 1024 * 1024 * 1024;
 		default: return 1;
 	}
 };
@@ -106,15 +106,12 @@ app_ygg_ratio_7432e.main = function()
 	var tables = document.querySelectorAll('div.table-responsive table.table');
 
 	// get the user upload / download values
-	var user_down_up = app_ygg_ratio_7432e.get_up_down_values_user();
+	var user_ratio_info = app_ygg_ratio_7432e.get_up_down_values_user();
 
-	if (user_down_up !== null) {
-		app_ygg_ratio_7432e.attributes.user_data.upload = user_down_up['upload'];
-		app_ygg_ratio_7432e.attributes.user_data.download = user_down_up['download'];
-		// check to avoid infinite div
-		if (user_down_up['download']) {
-			app_ygg_ratio_7432e.attributes.user_data.ratio = user_down_up['upload'] / user_down_up['download'];
-		}
+	if (user_ratio_info !== null) {
+		app_ygg_ratio_7432e.attributes.user_data.upload = user_ratio_info['upload'];
+		app_ygg_ratio_7432e.attributes.user_data.download = user_ratio_info['download'];
+		app_ygg_ratio_7432e.attributes.user_data.ratio = user_ratio_info['ratio'];
 	}
 
 	// we cleanup before running, this way we avoid
@@ -215,7 +212,7 @@ app_ygg_ratio_7432e.hydrate_row = function(row)
 	// get the size in go
 	var size = null;
 	if (size_torrent !== null) {
-		size = app_ygg_ratio_7432e.get_value_in_go(size_torrent);
+		size = app_ygg_ratio_7432e.get_value_in_ko(size_torrent);
 	}
 
 	// handle the case where the content of the tds equals '--'
@@ -675,35 +672,40 @@ app_ygg_ratio_7432e.get_up_down_values_user = function()
 		// if we are connected it contains the up/down values
 		// of the current user
 		let ratio_info = li_headers[0].textContent;
+		let ratio = li_headers[1].textContent;
 
 		// no value ? cancel
-		if (! ratio_info) {
+		if (! ratio_info || ! ratio) {
 			return null;
 		} else {
 			// by using the li textContent method we get all the text without the dom elements.
 			// this way we can operate directly on the full data. e.g. the up/down vals.
 			// They are separated by a -.
 			let array_ratio_infos = ratio_info.split('-');
+			let array_ratio = ratio.split(' ');
 
 			// we should only get 2 vals, otherwise wrong data
-			if (array_ratio_infos.length !== 2) {
+			if (array_ratio_infos.length !== 2 || array_ratio.length !== 4) {
 				return null;
 			} else {
 				// remove the useless spaces
 				let upload = array_ratio_infos[0].trim();
 				let download = array_ratio_infos[1].trim();
+				let ratio_ygg = parseFloat(array_ratio[3].trim());
 
 				//get the val in Go only
-				upload = app_ygg_ratio_7432e.get_value_in_go(upload);
-				download = app_ygg_ratio_7432e.get_value_in_go(download);
+				download = app_ygg_ratio_7432e.get_value_in_ko(download);
+				// we calculate instead of reading it to be more precise
+				upload = download * ratio_ygg;
 
 				// if null invalid otherwise ok
-				if (upload === null || download === null) {
+				if (upload === null || download === null || ratio_ygg === null || upload === NaN || download === NaN || ratio_ygg === NaN) {
 					return null;
 				} else {
 					return {
 						'upload': upload,
-						'download': download
+						'download': download,
+						'ratio': ratio_ygg
 					};
 				}
 			}
@@ -712,8 +714,8 @@ app_ygg_ratio_7432e.get_up_down_values_user = function()
 	}
 };
 
-// convert any download or upload value in Go
-app_ygg_ratio_7432e.get_value_in_go = function(value_to_convert)
+// convert any download or upload value in Ko
+app_ygg_ratio_7432e.get_value_in_ko = function(value_to_convert)
 {
 	// fetch the data
 	let found = value_to_convert.match(/^([0-9]+(\.[0-9]+)?)([KkMmGgTtPpEeo]+)$/)
@@ -721,21 +723,21 @@ app_ygg_ratio_7432e.get_value_in_go = function(value_to_convert)
 	if (found) {
 		// the 1 contains the full number, the 2 contains the decimal part
 		// and the 3 contains the power
-		return parseFloat(found[1]) * getMultiplierForGo(found[3]);
+		return parseFloat(found[1]) * getMultiplierForKo(found[3]);
 	} else {
 		return null;
 	}
 };
 
 // get the ratio of the user after that downloaded
-app_ygg_ratio_7432e.get_ratio_info_post_download = function(size_download_in_go)
+app_ygg_ratio_7432e.get_ratio_info_post_download = function(size_download_in_ko)
 {
 	if (
 		app_ygg_ratio_7432e.attributes.user_data.upload !== null
 		&& app_ygg_ratio_7432e.attributes.user_data.download !== null
 	) {
 		// get the toal download of the user if he downloaded this torrent
-		let user_total_download = size_download_in_go + app_ygg_ratio_7432e.attributes.user_data.download;
+		let user_total_download = size_download_in_ko + app_ygg_ratio_7432e.attributes.user_data.download;
 		// get its new ratio
 		let ratio_post_download = app_ygg_ratio_7432e.attributes.user_data.upload / user_total_download;
 		//  get the diff
