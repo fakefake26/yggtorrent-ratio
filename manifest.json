@@ -21,20 +21,20 @@
     "content_scripts": [
         {
           "matches": [
-            "*://yggtorrent.si/*",
-            "*://*.yggtorrent.si/*"
+            "*://yggtorrent.li/*",
+            "*://*.yggtorrent.li/*"
         ],
           "exclude_matches": [
-            "*://wiki.yggtorrent.si/*",
-            "*://forum.yggtorrent.si/*",
-            "*://*.yggtorrent.si/forum/*",
-            "*://yggtorrent.si/forum/*",
-            "*://*.yggtorrent.si/user/*",
-            "*://yggtorrent.si/user/*",
-            "*://*.yggtorrent.si/donation/bonus",
-            "*://yggtorrent.si/donation/bonus",
-            "*://*.yggtorrent.si/rss*",
-            "*://yggtorrent.si/rss*"
+            "*://wiki.yggtorrent.li/*",
+            "*://forum.yggtorrent.li/*",
+            "*://*.yggtorrent.li/forum/*",
+            "*://yggtorrent.li/forum/*",
+            "*://*.yggtorrent.li/user/*",
+            "*://yggtorrent.li/user/*",
+            "*://*.yggtorrent.li/donation/bonus",
+            "*://yggtorrent.li/donation/bonus",
+            "*://*.yggtorrent.li/rss*",
+            "*://yggtorrent.li/rss*"
         ],
           "js": ["ratio.js"]
         }
