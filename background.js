@@ -9,7 +9,7 @@ browser.pageAction.onClicked.addListener(handleClick);
 
 // we show the icon in the address bar only when we are on the yggtorrent sites
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (tab.url.match('^https?://([0-9a-zA-Z\-]+\.)?yggtorrent\.nz/.*$')) {
+    if (tab.url.match('^https?://([0-9a-zA-Z\-]+\.)?yggtorrent\.re/.*$')) {
         browser.pageAction.show(tab.id);
     }
 });
