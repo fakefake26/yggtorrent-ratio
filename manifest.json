@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "yggtorrent ratio",
     "short_name": "ygg ratio",
-    "version": "3.1.11",
+    "version": "3.1.12",
 
     "applications": {
         "gecko": {
@@ -21,22 +21,22 @@
     "content_scripts": [
         {
           "matches": [
-            "*://yggtorrent.re/*",
-            "*://*.yggtorrent.re/*"
+            "*://yggtorrent.la/*",
+            "*://*.yggtorrent.la/*"
         ],
           "exclude_matches": [
-            "*://wiki.yggtorrent.re/*",
-            "*://forum.yggtorrent.re/*",
-            "*://*.yggtorrent.re/forum/*",
-            "*://yggtorrent.re/forum/*",
-            "*://*.yggtorrent.re/user/*",
-            "*://yggtorrent.re/user/*",
-            "*://*.yggtorrent.re/donation/bonus",
-            "*://yggtorrent.re/donation/bonus",
-            "*://*.yggtorrent.re/rss*",
-            "*://yggtorrent.re/rss*",
-            "*://*.yggtorrent.re/user_messaging",
-            "*://yggtorrent.re/user_messaging"
+            "*://wiki.yggtorrent.la/*",
+            "*://forum.yggtorrent.la/*",
+            "*://*.yggtorrent.la/forum/*",
+            "*://yggtorrent.la/forum/*",
+            "*://*.yggtorrent.la/user/*",
+            "*://yggtorrent.la/user/*",
+            "*://*.yggtorrent.la/donation/bonus",
+            "*://yggtorrent.la/donation/bonus",
+            "*://*.yggtorrent.la/rss*",
+            "*://yggtorrent.la/rss*",
+            "*://*.yggtorrent.la/user_messaging",
+            "*://yggtorrent.la/user_messaging"
         ],
           "js": ["ratio.js"]
         }
