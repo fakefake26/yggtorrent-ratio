@@ -22,22 +22,25 @@
     "content_scripts": [
         {
           "matches": [
-            "*://yggtorrent.la/*",
-            "*://*.yggtorrent.la/*"
+            "https://*/*"
         ],
-          "exclude_matches": [
-            "*://wiki.yggtorrent.la/*",
-            "*://forum.yggtorrent.la/*",
-            "*://*.yggtorrent.la/forum/*",
-            "*://yggtorrent.la/forum/*",
-            "*://*.yggtorrent.la/user/*",
-            "*://yggtorrent.la/user/*",
-            "*://*.yggtorrent.la/donation/bonus",
-            "*://yggtorrent.la/donation/bonus",
-            "*://*.yggtorrent.la/rss*",
-            "*://yggtorrent.la/rss*",
-            "*://*.yggtorrent.la/user_messaging",
-            "*://yggtorrent.la/user_messaging"
+        "include_globs": [
+            "https://*.yggtorrent.*/*",
+            "https://yggtorrent.*/*"
+        ],
+        "exclude_globs": [
+            "https://wiki.yggtorrent.*/*",
+            "https://forum.yggtorrent.*/*",
+            "https://*.yggtorrent.*/forum/*",
+            "https://yggtorrent.*/forum/*",
+            "https://*.yggtorrent.*/user/*",
+            "https://yggtorrent.*/user/*",
+            "https://*.yggtorrent.*/donation/bonus",
+            "https://yggtorrent.*/donation/bonus",
+            "https://*.yggtorrent.*/rss*",
+            "https://yggtorrent.*/rss*",
+            "https://*.yggtorrent.*/user_messaging",
+            "https://yggtorrent.*/user_messaging"
         ],
           "js": ["ratio.js"]
         }

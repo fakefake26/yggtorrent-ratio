@@ -1,6 +1,6 @@
 {
     "extensionDescription": {
-        "message": "Adds a quicker way to see availability of torrents on yggtorrent.la",
+        "message": "Adds a quicker way to see availability of torrents on yggtorrent",
         "description": "Description of the extension."
     },
     "pagePreferencesLeechPercentage": {
