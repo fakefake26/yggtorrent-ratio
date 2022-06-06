@@ -3,10 +3,6 @@
         "message": "Adds a quicker way to see availability of torrents on yggtorrent.la",
         "description": "Description of the extension."
     },
-    "pageActionDefaultTitle": {
-        "message": "yggtorrent-ratio preferences",
-        "description": "Title on mouse hover on the address bar icon to go to preferences."
-    },
     "pagePreferencesLeechPercentage": {
         "message": "Show the Leech% (L%) : ",
         "description": "Label value in preferences page for the leech_percentage."

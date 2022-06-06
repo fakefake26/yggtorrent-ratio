@@ -13,7 +13,7 @@
     "description": "__MSG_extensionDescription__",
     "homepage_url": "https://github.com/fakefake26/yggtorrent-ratio",
     "default_locale": "en",
-    "permissions": ["storage", "tabs"],
+    "permissions": ["storage"],
 
     "icons": {
         "48": "icons/logo-48x48.png"
@@ -42,20 +42,9 @@
           "js": ["ratio.js"]
         }
     ],
-    "background": {
-        "scripts": ["background.js"]
-    },
 
     "options_ui": {
         "page": "options/options.html",
         "browser_style": true
-    },
-
-    "page_action": {
-        "default_icon": {
-            "19": "icons/logo-19x19.png",
-            "38": "icons/logo-38x38.png"
-        },
-        "default_title": "__MSG_pageActionDefaultTitle__"
     }
 }
