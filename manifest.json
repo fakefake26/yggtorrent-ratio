@@ -11,6 +11,7 @@
     },
 
     "description": "__MSG_extensionDescription__",
+    "homepage_url": "https://github.com/fakefake26/yggtorrent-ratio",
     "default_locale": "en",
     "permissions": ["storage", "tabs"],
 
