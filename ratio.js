@@ -682,16 +682,16 @@ app_ygg_ratio_7432e.get_up_down_values_user = function()
 			// this way we can operate directly on the full data. e.g. the up/down vals.
 			// They are separated by a -.
 			let array_ratio_infos = ratio_info.split('-');
-			let array_ratio = ratio.split(' ');
+			let array_ratio = ratio.split(':');
 
 			// we should only get 2 vals, otherwise wrong data
-			if (array_ratio_infos.length !== 2 || array_ratio.length !== 4) {
+			if (array_ratio_infos.length !== 2 || array_ratio.length !== 2) {
 				return null;
 			} else {
 				// remove the useless spaces
 				let upload = array_ratio_infos[0].trim();
 				let download = array_ratio_infos[1].trim();
-				let ratio_ygg = parseFloat(array_ratio[3].trim());
+				let ratio_ygg = parseFloat(array_ratio[1].trim());
 
 				//get the val in Go only
 				download = app_ygg_ratio_7432e.get_value_in_ko(download);
