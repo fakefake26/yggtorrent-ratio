@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "yggtorrent ratio",
     "short_name": "ygg ratio",
-    "version": "3.2.0",
+    "version": "3.3.0",
 
     "applications": {
         "gecko": {
@@ -26,7 +26,9 @@
         ],
         "include_globs": [
             "https://*.yggtorrent.*/*",
-            "https://yggtorrent.*/*"
+            "https://yggtorrent.*/*",
+            "https://*.ygg.*/*",
+            "https://ygg.*/*"
         ],
         "exclude_globs": [
             "https://wiki.yggtorrent.*/*",
@@ -40,7 +42,19 @@
             "https://*.yggtorrent.*/rss*",
             "https://yggtorrent.*/rss*",
             "https://*.yggtorrent.*/user_messaging",
-            "https://yggtorrent.*/user_messaging"
+            "https://yggtorrent.*/user_messaging",
+            "https://wiki.ygg.*/*",
+            "https://forum.ygg.*/*",
+            "https://*.ygg.*/forum/*",
+            "https://ygg.*/forum/*",
+            "https://*.ygg.*/user/*",
+            "https://ygg.*/user/*",
+            "https://*.ygg.*/donation/bonus",
+            "https://ygg.*/donation/bonus",
+            "https://*.ygg.*/rss*",
+            "https://ygg.*/rss*",
+            "https://*.ygg.*/user_messaging",
+            "https://ygg.*/user_messaging"
         ],
           "js": ["ratio.js"]
         }
